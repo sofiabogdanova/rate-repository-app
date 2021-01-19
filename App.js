@@ -19,4 +19,3 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
 });
-//Exercise 10.1: initializing the application
