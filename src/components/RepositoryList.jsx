@@ -1,6 +1,7 @@
 import React from 'react';
 import { FlatList, View, StyleSheet } from 'react-native';
-import RepositoryItem from "./RepositoryItem";
+
+import RepositoryItem from './RepositoryItem';
 
 const styles = StyleSheet.create({
     separator: {
@@ -61,21 +62,9 @@ const RepositoryList = () => {
     return (
         <FlatList
             data={repositories}
+            keyExtractor={({ id }) => id}
+            renderItem={({ item }) => <RepositoryItem repository={item} />}
             ItemSeparatorComponent={ItemSeparator}
-            renderItem={({ item, index }) => (
-                <RepositoryItem key={index} repo={item}/>
-            )}
-            // renderItem={({ item, index, separators }) => (
-            //     <TouchableHighlight
-            //         key={item.key}
-            //         onPress={() => this._onPress(item)}
-            //         onShowUnderlay={separators.highlight}
-            //         onHideUnderlay={separators.unhighlight}>
-            //         <View style={{ backgroundColor: 'white' }}>
-            //             <Text>{item.title}</Text>
-            //         </View>
-            //     </TouchableHighlight>
-            // )}
         />
     );
 };
