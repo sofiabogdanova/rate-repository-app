@@ -73,7 +73,7 @@ const CountItem = ({ label, count }) => {
 
 const RepositoryItem = ({ repository }) => {
     const {
-        fullName,
+        name,
         description,
         language,
         forksCount,
@@ -96,7 +96,7 @@ const RepositoryItem = ({ repository }) => {
                         fontSize="subheading"
                         numberOfLines={1}
                     >
-                        {fullName}
+                        {name}
                     </Text>
                     <Text style={styles.descriptionText} color="textSecondary">
                         {description}
