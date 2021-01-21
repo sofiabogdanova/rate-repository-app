@@ -6,7 +6,9 @@ const useRepositories = () => {
         fetchPolicy: 'cache-and-network'
     });
 
-    const repositories = result.data.repositories
+    const repositories = result && result.data && result.data.repositories
+        ? result.data.repositories
+        : {edges: []}
 //   const [repositories, setRepositories] = useState();
 //   const [loading, setLoading] = useState(false);
 
