@@ -1,10 +1,13 @@
-import React from 'react';
-import { View, ScrollView, TouchableWithoutFeedback, StyleSheet } from 'react-native';
+import React, {useContext} from 'react';
+import {ScrollView, StyleSheet, TouchableWithoutFeedback, View} from 'react-native';
 import Constants from 'expo-constants';
-import { Link } from 'react-router-native';
+import {Link} from 'react-router-native';
 
 import theme from '../theme';
 import Text from './Text';
+import {useApolloClient, useQuery} from "@apollo/client";
+import {AUTHORIZED_USER} from "../graphql/queries";
+import AuthStorageContext from '../contexts/AuthStorageContext';
 
 const styles = StyleSheet.create({
     container: {
@@ -29,7 +32,7 @@ const styles = StyleSheet.create({
     },
 });
 
-const AppBarTab = ({ children, ...props }) => {
+const AppBarTab = ({children, ...props}) => {
     return (
         <TouchableWithoutFeedback style={styles.tabTouchable} {...props}>
             <View style={styles.tabContainer}>
@@ -42,14 +45,39 @@ const AppBarTab = ({ children, ...props }) => {
 };
 
 const AppBar = () => {
+    const result = useQuery(AUTHORIZED_USER, {
+        fetchPolicy: 'cache-and-network'
+    });
+    const authStorage = useContext(AuthStorageContext);
+    const client = useApolloClient();
+    console.log(`DATA HERE ${time()}`)
+    console.log(result.data)
+    const user = result && result.data && result.data.authorizedUser
+        ? result.data.authorizedUser
+        : null;
+    console.log(`USER HERE ${time()}`)
+    console.log(user)
+
+    const signOut = async () => {
+        await authStorage.removeAccessToken();
+        await client.resetStore();
+        console.log("BLA")
+    }
     return (
         <View style={styles.container}>
             <ScrollView style={styles.scrollView} horizontal>
                 <Link to="/" component={AppBarTab}>Repositories</Link>
-                <Link to="/sign-in" component={AppBarTab}>Sign in</Link>
+                {!user && <Link to="/sign-in" component={AppBarTab}>Sign in</Link>}
+                {user && <AppBarTab onPress={() => signOut()}>Sign out</AppBarTab>}
+
             </ScrollView>
         </View>
     );
 };
 
+const time = () => {
+    const today = new Date();
+    const time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+    return time;
+}
 export default AppBar;

@@ -10,9 +10,9 @@ const useSignIn = () => {
 
     const signIn = async ({username, password}) => {
         const data = await mutate({variables: {username: username, password: password}});
-        const token = data && data.authorize && data.authorize.accessToken ? data.authorize.accessToken : '';
+        const token = data && data.authorize ? data.authorize.accessToken : '';
         await authStorage.setAccessToken(token);
-        await client.clearStore();
+        await client.resetStore();
         return data;
     };
 
