@@ -1,7 +1,8 @@
 import React from 'react';
-import { StyleSheet, View } from 'react-native';
-import { Formik } from 'formik';
+import {StyleSheet, View} from 'react-native';
+import {Formik} from 'formik';
 import * as yup from 'yup';
+import {useHistory} from "react-router-dom";
 
 import Button from './button';
 import FormikTextInput from './FormikTextInput';
@@ -27,11 +28,11 @@ const validationSchema = yup.object().shape({
     password: yup.string().required('Password is required'),
 });
 
-const SignInForm = ({ onSubmit }) => {
+const SignInForm = ({onSubmit}) => {
     return (
         <View style={styles.container}>
             <View style={styles.fieldContainer}>
-                <FormikTextInput name="username" placeholder="Username" />
+                <FormikTextInput name="username" placeholder="Username"/>
             </View>
             <View style={styles.fieldContainer}>
                 <FormikTextInput
@@ -47,14 +48,14 @@ const SignInForm = ({ onSubmit }) => {
 
 const SignIn = () => {
     const [signIn] = useSignIn();
-
+    let history = useHistory();
     const onSubmit = async (values) => {
-        const { username, password } = values;
+        const {username, password} = values;
 
         try {
-            const { data } = await signIn({ username, password });
+            const {data} = await signIn({username, password});
             console.log('SUCCESS:' + data.authorize.accessToken);
-            console.log(data);
+            history.push("/");
         } catch (e) {
             console.log(e);
         }
@@ -72,7 +73,7 @@ const SignIn = () => {
             onSubmit={onSubmit}
             validationSchema={validationSchema}
         >
-            {({ handleSubmit }) => <SignInForm onSubmit={handleSubmit} />}
+            {({handleSubmit}) => <SignInForm onSubmit={handleSubmit}/>}
         </Formik>
     );
 };
