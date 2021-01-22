@@ -9,11 +9,15 @@ const useSignIn = () => {
     const authStorage = useContext(AuthStorageContext);
 
     const signIn = async ({username, password}) => {
-        const data = await mutate({variables: {username: username, password: password}});
-        const token = data && data.authorize ? data.authorize.accessToken : '';
-        await authStorage.setAccessToken(token);
-        await client.resetStore();
-        return data;
+        const payload = await mutate({variables: {username: username, password: password}});
+        const {data} = payload;
+
+        if (data && data.authorize) {
+            await authStorage.setAccessToken(data.authorize.accessToken);
+            client.resetStore();
+        }
+
+        return payload;
     };
 
     return [signIn, result];

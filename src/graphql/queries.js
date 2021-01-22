@@ -26,5 +26,3 @@ query{
   }
 }
 `;
-
-// other queries...

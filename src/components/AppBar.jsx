@@ -50,18 +50,13 @@ const AppBar = () => {
     });
     const authStorage = useContext(AuthStorageContext);
     const client = useApolloClient();
-    console.log(`DATA HERE ${time()}`)
-    console.log(result.data)
     const user = result && result.data && result.data.authorizedUser
         ? result.data.authorizedUser
         : null;
-    console.log(`USER HERE ${time()}`)
-    console.log(user)
 
     const signOut = async () => {
         await authStorage.removeAccessToken();
         await client.resetStore();
-        console.log("BLA")
     }
     return (
         <View style={styles.container}>
@@ -75,9 +70,4 @@ const AppBar = () => {
     );
 };
 
-const time = () => {
-    const today = new Date();
-    const time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
-    return time;
-}
 export default AppBar;

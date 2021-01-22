@@ -52,19 +52,10 @@ const SignIn = () => {
     const onSubmit = async (values) => {
         const {username, password} = values;
 
-        try {
-            const {data} = await signIn({username, password});
-            history.push("/");
-        } catch (e) {
-            console.log(e);
-        }
-    };
+        await signIn({username, password});
 
-    // const onSubmit = (values) => {
-    //     console.log(values);
-    //     const token = useSignIn(values.username, values.password)
-    //     console.log(token);
-    // };
+        history.push('/');
+    };
 
     return (
         <Formik
