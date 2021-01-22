@@ -1,8 +1,7 @@
-import React, { useState, useEffect } from 'react';
-import { FlatList, View, StyleSheet } from 'react-native';
-
-import RepositoryItem from './RepositoryItem';
+import React from 'react';
+import {FlatList, StyleSheet, View} from 'react-native';
 import useRepositories from '../hooks/useRepositories';
+import RepositoryItem from "./RepositoryItem";
 
 const styles = StyleSheet.create({
     separator: {
@@ -57,23 +56,37 @@ const styles = StyleSheet.create({
 //     },
 // ];
 
-const ItemSeparator = () => <View style={styles.separator} />;
+const ItemSeparator = () => <View style={styles.separator}/>;
+
+export const RepositoryListContainer = ({repositories}) => {
+    const repositoryNodes = repositories
+        ? repositories.edges.map((edge) => edge.node)
+        : [];
+
+    return (
+            <FlatList
+                data={repositoryNodes}
+                keyExtractor={({ id }) => id}
+                renderItem={({ item }) => <RepositoryItem repository={item} />}
+                ItemSeparatorComponent={ItemSeparator}
+            />
+    );
+};
 
 const RepositoryList = () => {
-      const { repositories } = useRepositories();
-
-    const repositoryNodes = repositories
-      ? repositories.edges.map(edge => edge.node)
-      : [];
+    const {repositories} = useRepositories();
+    return (<RepositoryListContainer repositories={repositories}/>);
+    // const repositoryNodes = repositories
+    //   ? repositories.edges.map(edge => edge.node)
+    //   : [];
     // const repositoryNodes = repositories;
-    return (
-        <FlatList
-            data={repositoryNodes}
-            keyExtractor={({ id }) => id}
-            renderItem={({ item }) => <RepositoryItem repository={item} />}
-            ItemSeparatorComponent={ItemSeparator}
-        />
-    );
+    // return (
+    //     <FlatList
+    //         data={repositoryNodes}
+    //         keyExtractor={({ id }) => id}
+    //         renderItem={({ item }) => <RepositoryItem repository={item} />}
+    //         ItemSeparatorComponent={ItemSeparator}
+    //     />
 };
 
 export default RepositoryList;
