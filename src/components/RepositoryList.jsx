@@ -3,11 +3,13 @@ import {FlatList, StyleSheet, TouchableOpacity, View} from 'react-native';
 import useRepositories from '../hooks/useRepositories';
 import RepositoryItem from "./RepositoryItem";
 import {useHistory} from "react-router-dom";
+import theme from "../theme";
 
 const styles = StyleSheet.create({
     separator: {
-        height: 10,
-    },
+        height: 5,
+        backgroundColor: theme.colors.separatorBackgroundL
+},
 });
 
 // const repositories = [
