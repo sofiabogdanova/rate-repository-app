@@ -1,13 +1,12 @@
 import React from 'react';
-import { StyleSheet, View } from 'react-native';
-import { Route, Switch, Redirect } from 'react-router-native';
+import {StyleSheet, View} from 'react-native';
+import {Redirect, Route, Switch} from 'react-router-native';
 
 import RepositoryList from './RepositoryList';
 import AppBar from './AppBar';
 import SignIn from './SignIn';
 import theme from '../theme';
-import RepositoryItem from "./RepositoryItem";
-import RepositoryPage from "./RepositoryPage";
+import SingleRepository from "./SingleRepository";
 
 const styles = StyleSheet.create({
     container: {
@@ -20,18 +19,18 @@ const styles = StyleSheet.create({
 const Main = () => {
     return (
         <View style={styles.container}>
-            <AppBar />
+            <AppBar/>
             <Switch>
                 <Route path="/" exact>
-                    <RepositoryList />
+                    <RepositoryList/>
                 </Route>
                 <Route path="/sign-in" exact>
-                    <SignIn />
+                    <SignIn/>
                 </Route>
                 <Route path="/repository/:id" exact>
-                    <RepositoryPage />
+                    <SingleRepository/>
                 </Route>
-                <Redirect to="/" />
+                <Redirect to="/"/>
             </Switch>
         </View>
     );

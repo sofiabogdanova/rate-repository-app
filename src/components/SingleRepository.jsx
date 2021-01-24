@@ -4,8 +4,7 @@ import {useParams} from "react-router-dom";
 import {useQuery} from "@apollo/client";
 import {GET_REPOSITORY} from "../graphql/queries";
 
-const RepositoryPage = () => {
-
+const SingleRepository = () => {
     let {id} = useParams();
     const result = useQuery(GET_REPOSITORY, {
         fetchPolicy: 'cache-and-network',
@@ -20,4 +19,22 @@ const RepositoryPage = () => {
     return (<RepositoryItem repository={repository} showGitHubLink={true}/>);
 };
 
-export default RepositoryPage;
+const ReviewItem = ({ review }) => {
+    // Single review item
+};
+
+// const SingleRepository = () => {
+//     // ...
+//
+//     return (
+//         <FlatList
+//             data={reviews}
+//             renderItem={({ item }) => <ReviewItem review={item} />}
+//             keyExtractor={({ id }) => id}
+//             ListHeaderComponent={() => <RepositoryInfo repository={repository} />}
+//             // ...
+//         />
+//     );
+// };
+
+export default SingleRepository;
