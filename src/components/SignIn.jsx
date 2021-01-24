@@ -28,7 +28,7 @@ const validationSchema = yup.object().shape({
     password: yup.string().required('Password is required'),
 });
 
-const SignInForm = ({onSubmit}) => {
+export const SignInForm = ({onSubmit}) => {
     return (
         <View style={styles.container}>
             <View style={styles.fieldContainer}>
@@ -41,7 +41,7 @@ const SignInForm = ({onSubmit}) => {
                     secureTextEntry
                 />
             </View>
-            <Button onPress={onSubmit}>Sign in</Button>
+            <Button onPress={onSubmit} testID="submitButton">Sign in</Button>
         </View>
     );
 };
