@@ -58,6 +58,10 @@ const styles = StyleSheet.create({
         paddingVertical: 3,
         paddingHorizontal: 6,
     },
+    gitHubButton: {
+        marginTop: 5,
+        borderRadius: 10
+    }
 });
 
 const CountItem = ({label, count}) => {
@@ -121,7 +125,7 @@ const RepositoryItem = ({repository, showGitHubLink}) => {
                     <CountItem count={reviewCount} label="Reviews"/>
                     <CountItem count={ratingAverage} label="Rating"/>
                 </View>
-                {showGitHubLink && <Button onPress={openGitHub}>Open GitHub</Button>}
+                {showGitHubLink && <Button style={styles.gitHubButton} onPress={openGitHub}>Open GitHub</Button>}
             </View>
         );
     }
