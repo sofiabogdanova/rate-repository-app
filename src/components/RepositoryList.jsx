@@ -1,7 +1,8 @@
 import React from 'react';
-import {FlatList, StyleSheet, View} from 'react-native';
+import {FlatList, StyleSheet, TouchableOpacity, View} from 'react-native';
 import useRepositories from '../hooks/useRepositories';
 import RepositoryItem from "./RepositoryItem";
+import {useHistory} from "react-router-dom";
 
 const styles = StyleSheet.create({
     separator: {
@@ -59,34 +60,28 @@ const styles = StyleSheet.create({
 const ItemSeparator = () => <View style={styles.separator}/>;
 
 export const RepositoryListContainer = ({repositories}) => {
+    let history = useHistory();
     const repositoryNodes = repositories
         ? repositories.edges.map((edge) => edge.node)
         : [];
-
+    const onPress = (id) => {
+        history.push(`/repository/${id}`)
+    }
     return (
-            <FlatList
-                data={repositoryNodes}
-                keyExtractor={({ id }) => id}
-                renderItem={({ item }) => <RepositoryItem repository={item} />}
-                ItemSeparatorComponent={ItemSeparator}
-            />
+        <FlatList
+            data={repositoryNodes}
+            keyExtractor={({id}) => id}
+            renderItem={({item}) => <TouchableOpacity onPress={() => onPress(item.id)}>
+                <RepositoryItem repository={item} showGitHubLink={false}/>
+            </TouchableOpacity>}
+            ItemSeparatorComponent={ItemSeparator}
+        />
     );
 };
 
 const RepositoryList = () => {
     const {repositories} = useRepositories();
     return (<RepositoryListContainer repositories={repositories}/>);
-    // const repositoryNodes = repositories
-    //   ? repositories.edges.map(edge => edge.node)
-    //   : [];
-    // const repositoryNodes = repositories;
-    // return (
-    //     <FlatList
-    //         data={repositoryNodes}
-    //         keyExtractor={({ id }) => id}
-    //         renderItem={({ item }) => <RepositoryItem repository={item} />}
-    //         ItemSeparatorComponent={ItemSeparator}
-    //     />
 };
 
 export default RepositoryList;

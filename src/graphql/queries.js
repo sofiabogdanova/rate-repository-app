@@ -19,10 +19,32 @@ query{
         ratingAverage
         stargazersCount
         forksCount
+        description
+        language
         name
+        url
         id
       }
     }
+  }
+}
+`;
+
+export const GET_REPOSITORY = gql`
+query repository($id: ID!){
+  repository(id: $id) {
+        ownerName
+        ownerAvatarUrl
+        reviewCount
+        ratingAverage
+        stargazersCount
+        forksCount
+        description
+        language
+        name
+        fullName
+        url
+        id
   }
 }
 `;

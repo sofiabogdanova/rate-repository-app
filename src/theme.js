@@ -9,15 +9,13 @@ const theme = {
         body: 14,
         subheading: 16,
     },
-     fonts: {
-        fontFamily: 'Arial',
-    }
-    // Platform.select({
-    //     ios: { fontFamily: 'Arial', },
-    //     android: { fontFamily: 'Roboto' },
-    //     default: { fontFamily: 'System'}
-    // })
-    ,
+    fonts:
+   // { fontFamily: 'Arial'},
+        Platform.select({
+            ios: {fontFamily: 'Arial',},
+            android: {fontFamily: 'Roboto'},
+            default: {fontFamily: 'System'}
+        }),
     fontWeights: {
         normal: '400',
         bold: '700',

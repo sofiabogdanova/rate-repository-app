@@ -6,6 +6,8 @@ import RepositoryList from './RepositoryList';
 import AppBar from './AppBar';
 import SignIn from './SignIn';
 import theme from '../theme';
+import RepositoryItem from "./RepositoryItem";
+import RepositoryPage from "./RepositoryPage";
 
 const styles = StyleSheet.create({
     container: {
@@ -25,6 +27,9 @@ const Main = () => {
                 </Route>
                 <Route path="/sign-in" exact>
                     <SignIn />
+                </Route>
+                <Route path="/repository/:id" exact>
+                    <RepositoryPage />
                 </Route>
                 <Redirect to="/" />
             </Switch>

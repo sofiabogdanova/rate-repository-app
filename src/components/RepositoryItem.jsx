@@ -1,9 +1,9 @@
 import React from 'react';
-import { View, Image, StyleSheet } from 'react-native';
-
+import {Image, Linking, StyleSheet, View} from 'react-native';
 import theme from '../theme';
 import Text from './Text';
 import formatInThousands from '../utils/formatInThousands';
+import Button from "./button";
 
 const styles = StyleSheet.create({
     container: {
@@ -60,8 +60,8 @@ const styles = StyleSheet.create({
     },
 });
 
-const CountItem = ({ label, count }) => {
-    const testId=`repositoryItem${label}`;
+const CountItem = ({label, count}) => {
+    const testId = `repositoryItem${label}`;
     return (
         <View style={styles.countItem}>
             <Text style={styles.countItemCount} fontWeight="bold" testID={testId}>
@@ -72,52 +72,59 @@ const CountItem = ({ label, count }) => {
     );
 };
 
-const RepositoryItem = ({ repository }) => {
-    const {
-        name,
-        description,
-        language,
-        forksCount,
-        stargazersCount,
-        ratingAverage,
-        reviewCount,
-        ownerAvatarUrl,
-    } = repository;
+const RepositoryItem = ({repository, showGitHubLink}) => {
+        const {
+            name,
+            description,
+            language,
+            forksCount,
+            stargazersCount,
+            ratingAverage,
+            reviewCount,
+            ownerAvatarUrl,
+            url
+        } = repository;
 
-    return (
-        <View style={styles.container}>
-            <View style={styles.topContainer}>
-                <View style={styles.avatarContainer}>
-                    <Image source={{ uri: ownerAvatarUrl }} style={styles.avatar} />
+        const openGitHub = () => {
+            Linking.openURL(url);
+        }
+
+        return (
+            <View style={styles.container}>
+                <View style={styles.topContainer}>
+                    <View style={styles.avatarContainer}>
+                        <Image source={{uri: ownerAvatarUrl}} style={styles.avatar}/>
+                    </View>
+                    <View style={styles.contentContainer}>
+                        <Text
+                            style={styles.nameText}
+                            fontWeight="bold"
+                            fontSize="subheading"
+                            numberOfLines={1}
+                            testID="repositoryItemName"
+                        >
+                            {name}
+                        </Text>
+                        <Text style={styles.descriptionText} color="textSecondary" testID="repositoryItemDescription">
+                            {description}
+                        </Text>
+                        {language ? (
+                            <View style={styles.languageContainer}>
+                                <Text style={styles.languageText}>{language}</Text>
+                            </View>
+                        ) : null}
+                    </View>
                 </View>
-                <View style={styles.contentContainer}>
-                    <Text
-                        style={styles.nameText}
-                        fontWeight="bold"
-                        fontSize="subheading"
-                        numberOfLines={1}
-                        testID="repositoryItemName"
-                    >
-                        {name}
-                    </Text>
-                    <Text style={styles.descriptionText} color="textSecondary" testID="repositoryItemDescription">
-                        {description}
-                    </Text>
-                    {language ? (
-                        <View style={styles.languageContainer}>
-                            <Text style={styles.languageText}>{language}</Text>
-                        </View>
-                    ) : null}
+                <View style={styles.bottomContainer}>
+                    <CountItem count={stargazersCount} label="Stars"/>
+                    <CountItem count={forksCount} label="Forks"/>
+                    <CountItem count={reviewCount} label="Reviews"/>
+                    <CountItem count={ratingAverage} label="Rating"/>
                 </View>
+                {showGitHubLink && <Button onPress={openGitHub}>Open GitHub</Button>}
             </View>
-            <View style={styles.bottomContainer}>
-                <CountItem count={stargazersCount} label="Stars" />
-                <CountItem count={forksCount} label="Forks" />
-                <CountItem count={reviewCount} label="Reviews" />
-                <CountItem count={ratingAverage} label="Rating" />
-            </View>
-        </View>
-    );
-};
+        );
+    }
+;
 
 export default RepositoryItem;
