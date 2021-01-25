@@ -9,27 +9,61 @@ query{
 }`
 
 export const GET_REPOSITORIES = gql`
-query{
-  repositories{
+query repositories($orderBy: AllRepositoriesOrderBy, $orderDirection: OrderDirection){
+  repositories(orderBy: $orderBy, orderDirection: $orderDirection ){
     edges{
       node{
         ownerName
+        description
+        language
         ownerAvatarUrl
         reviewCount
         ratingAverage
         stargazersCount
         forksCount
-        description
-        language
         name
         fullName
-        url
         id
+        url
+        reviews {
+          edges {
+          node {
+            id
+            text
+            rating
+            createdAt
+            user {
+              id
+              username
+            }
+          }
+        }
       }
     }
   }
-}
-`;
+ }
+}`;
+// query{
+//   repositories{
+//     edges{
+//       node{
+//         ownerName
+//         ownerAvatarUrl
+//         reviewCount
+//         ratingAverage
+//         stargazersCount
+//         forksCount
+//         description
+//         language
+//         name
+//         fullName
+//         url
+//         id
+//       }
+//     }
+//   }
+// }
+// `;
 
 export const GET_REPOSITORY = gql`
 query repository($id: ID!){

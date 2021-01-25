@@ -1,15 +1,21 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {FlatList, StyleSheet, TouchableOpacity, View} from 'react-native';
 import useRepositories from '../hooks/useRepositories';
 import RepositoryItem from "./RepositoryItem";
 import {useHistory} from "react-router-dom";
 import theme from "../theme";
+import Dropdown from "./FlatListDropDown";
+import filterValues from "../filterValues";
 
 const styles = StyleSheet.create({
     separator: {
         height: 5,
         backgroundColor: theme.colors.separatorBackgroundL
-},
+    },
+    listHeader: {
+        zIndex: 11,
+        position: 'relative'
+    }
 });
 
 // const repositories = [
@@ -61,7 +67,7 @@ const styles = StyleSheet.create({
 
 const ItemSeparator = () => <View style={styles.separator}/>;
 
-export const RepositoryListContainer = ({repositories}) => {
+export const RepositoryListContainer = ({repositories, options, setOptions}) => {
     let history = useHistory();
     const repositoryNodes = repositories
         ? repositories.edges.map((edge) => edge.node)
@@ -76,14 +82,18 @@ export const RepositoryListContainer = ({repositories}) => {
             renderItem={({item}) => <TouchableOpacity onPress={() => onPress(item.id)}>
                 <RepositoryItem repository={item} showGitHubLink={false}/>
             </TouchableOpacity>}
+            ListHeaderComponent={() => <Dropdown selectedFilter={options} onSelect={setOptions}/>}
+            ListHeaderComponentStyle={styles.listHeader}
             ItemSeparatorComponent={ItemSeparator}
         />
     );
 };
 
 const RepositoryList = () => {
-    const {repositories} = useRepositories();
-    return (<RepositoryListContainer repositories={repositories}/>);
+    const defaultFilter = filterValues.find(filter => filter.label === 'Latest repositories');
+    const [orderOptions, setOrderOptions] = useState(defaultFilter);
+    const {repositories} = useRepositories(orderOptions.value);
+    return (<RepositoryListContainer repositories={repositories} options={orderOptions} setOptions={setOrderOptions}/>);
 };
 
 export default RepositoryList;
