@@ -54,6 +54,9 @@ const styles = StyleSheet.create({
 const ItemSeparator = () => <View style={styles.separator}/>;
 
 const RepositoryInfo = ({repository}) => {
+    console.log("REVIEWS");
+    if (repository.reviews && repository.reviews.edges)
+        console.log(repository.reviews.edges.length)
     return (<RepositoryItem repository={repository} showGitHubLink={true}/>);
 };
 
@@ -87,20 +90,56 @@ const ReviewItem = ({review}) => {
 
 const SingleRepository = () => {
     let {id} = useParams();
-    const result = useQuery(GET_REPOSITORY, {
+    const variables = {
+        id: id,
+        first: 3
+    };
+    const {data, loading, fetchMore} = useQuery(GET_REPOSITORY, {
         fetchPolicy: 'cache-and-network',
-        variables: {
-            id: id
-        }
+        variables: variables
     });
 
-    const repository = result && result.data && result.data.repository
-        ? result.data.repository
+    const handleFetchMore = () => {
+        const canFetchMore =
+            !loading && data.repository && data.repository.reviews && data.repository.reviews.pageInfo.hasNextPage;
+
+        if (!canFetchMore) {
+            return;
+        }
+
+        fetchMore({
+            query: GET_REPOSITORY,
+            variables: {
+                after: data.repository.reviews.pageInfo.endCursor,
+                ...variables,
+            },
+            updateQuery: (previousResult, {fetchMoreResult}) => {
+                const nextResult = {
+                    repository: {
+                        ...fetchMoreResult.repository,
+                        reviews: {
+                            ...fetchMoreResult.repository.reviews,
+                            edges: [...previousResult.repository.reviews.edges,
+                                ...fetchMoreResult.repository.reviews.edges]
+                        }
+                    },
+                };
+
+                return nextResult;
+            },
+        });
+    };
+
+    const repository = data && data.repository
+        ? data.repository
         : {};
-    const reviews = result && result.data && result.data.repository
-        ? result.data.repository.reviews.edges.map(edge => edge.node)
+    const reviews = data && data.repository
+        ? data.repository.reviews.edges.map(edge => edge.node)
         : [];
 
+    const onEndReach = () => {
+        console.log("REACHED THE END");
+    }
     return (
         <FlatList
             data={reviews}
@@ -108,6 +147,8 @@ const SingleRepository = () => {
             keyExtractor={({id}) => id}
             ListHeaderComponent={() => <RepositoryInfo repository={repository}/>}
             ItemSeparatorComponent={ItemSeparator}
+            onEndReached={handleFetchMore}
+            onEndReachedThreshold={0.5}
         />
     );
 };
