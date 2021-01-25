@@ -6,6 +6,8 @@ import {useHistory} from "react-router-dom";
 import theme from "../theme";
 import Dropdown from "./FlatListDropDown";
 import filterValues from "../filterValues";
+import SearchForm from "./SearchForm";
+import {useDebounce} from "use-debounce";
 
 const styles = StyleSheet.create({
     separator: {
@@ -91,9 +93,15 @@ export const RepositoryListContainer = ({repositories, options, setOptions}) => 
 
 const RepositoryList = () => {
     const defaultFilter = filterValues.find(filter => filter.label === 'Latest repositories');
+    const [searchKeyword, setSearchKeyword] = useState('');
     const [orderOptions, setOrderOptions] = useState(defaultFilter);
-    const {repositories} = useRepositories(orderOptions.value);
-    return (<RepositoryListContainer repositories={repositories} options={orderOptions} setOptions={setOrderOptions}/>);
+    const [debounceSearchKeyword] = useDebounce(searchKeyword, 500);
+    const {repositories} = useRepositories({...orderOptions.value, searchKeyword: debounceSearchKeyword});
+    return (
+        <View>
+        <SearchForm searchKeyword={searchKeyword} setSearchKeyword={setSearchKeyword}/>
+        <RepositoryListContainer repositories={repositories} options={orderOptions} setOptions={setOrderOptions}/>
+        </View>);
 };
 
 export default RepositoryList;
