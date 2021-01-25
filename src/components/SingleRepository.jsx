@@ -54,9 +54,6 @@ const styles = StyleSheet.create({
 const ItemSeparator = () => <View style={styles.separator}/>;
 
 const RepositoryInfo = ({repository}) => {
-    console.log("REVIEWS");
-    if (repository.reviews && repository.reviews.edges)
-        console.log(repository.reviews.edges.length)
     return (<RepositoryItem repository={repository} showGitHubLink={true}/>);
 };
 
