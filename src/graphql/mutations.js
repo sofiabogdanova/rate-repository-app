@@ -15,3 +15,10 @@ mutation createReview($review: CreateReviewInput!) {
   }
 }
 `;
+
+export const SIGN_UP = gql`
+    mutation createUser($user: CreateUserInput!) {
+  createUser(user: $user) {
+    username
+  }
+}`;
