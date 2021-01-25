@@ -65,6 +65,10 @@ const AppBar = () => {
         history.push('/createReview')
     }
 
+    const myReviews = () => {
+        history.push('/myReviews')
+    }
+
     return (
         <View style={styles.container}>
             <ScrollView style={styles.scrollView} horizontal>
@@ -72,6 +76,7 @@ const AppBar = () => {
                 {!user && <Link to="/sign-in" component={AppBarTab}>Sign in</Link>}
                 {!user && <Link to="/sign-up" component={AppBarTab}>Sign up</Link>}
                 {user && <AppBarTab onPress={() => createReview()}>Create a review</AppBarTab>}
+                {user && <AppBarTab onPress={() => myReviews()}>My reviews</AppBarTab>}
                 {user && <AppBarTab onPress={() => signOut()}>Sign out</AppBarTab>}
             </ScrollView>
         </View>

@@ -1,12 +1,26 @@
 import {gql} from 'apollo-boost';
 
 export const AUTHORIZED_USER = gql`
-query{
+query authorizedUser($includeReviews: Boolean = false){
   authorizedUser {
     id
     username
-  }
-}`
+    reviews @include(if: $includeReviews) {
+      edges {
+        node {
+          id
+          text
+          rating
+          createdAt
+          user {
+            id
+            username
+          }
+        }
+      }
+    }
+  } 
+}`;
 
 export const GET_REPOSITORIES = gql`
 query repositories($searchKeyword: String, $orderBy: AllRepositoriesOrderBy, $orderDirection: OrderDirection){

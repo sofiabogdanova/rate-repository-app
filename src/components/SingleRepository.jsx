@@ -51,13 +51,13 @@ const styles = StyleSheet.create({
     },
 });
 
-const ItemSeparator = () => <View style={styles.separator}/>;
+export const ItemSeparator = () => <View style={styles.separator}/>;
 
 const RepositoryInfo = ({repository}) => {
     return (<RepositoryItem repository={repository} showGitHubLink={true}/>);
 };
 
-const ReviewItem = ({review}) => {
+export const ReviewItem = ({review}) => {
     const createdAtFormatted = format(parseISO(review.createdAt), 'MM/dd/yyyy')
     return (
         <View style={styles.container}>
@@ -134,9 +134,6 @@ const SingleRepository = () => {
         ? data.repository.reviews.edges.map(edge => edge.node)
         : [];
 
-    const onEndReach = () => {
-        console.log("REACHED THE END");
-    }
     return (
         <FlatList
             data={reviews}
