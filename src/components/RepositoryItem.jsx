@@ -86,7 +86,8 @@ const RepositoryItem = ({repository, showGitHubLink}) => {
             ratingAverage,
             reviewCount,
             ownerAvatarUrl,
-            url
+            url,
+            fullName
         } = repository;
 
         const openGitHub = () => {
@@ -107,7 +108,7 @@ const RepositoryItem = ({repository, showGitHubLink}) => {
                             numberOfLines={1}
                             testID="repositoryItemName"
                         >
-                            {name}
+                            {fullName}
                         </Text>
                         <Text style={styles.descriptionText} color="textSecondary" testID="repositoryItemDescription">
                             {description}

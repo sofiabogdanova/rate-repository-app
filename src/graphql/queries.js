@@ -22,6 +22,7 @@ query{
         description
         language
         name
+        fullName
         url
         id
       }

@@ -8,6 +8,7 @@ import Text from './Text';
 import {useApolloClient, useQuery} from "@apollo/client";
 import {AUTHORIZED_USER} from "../graphql/queries";
 import AuthStorageContext from '../contexts/AuthStorageContext';
+import {useHistory} from "react-router-dom";
 
 const styles = StyleSheet.create({
     container: {
@@ -50,6 +51,7 @@ const AppBar = () => {
     });
     const authStorage = useContext(AuthStorageContext);
     const client = useApolloClient();
+    let history = useHistory();
     const user = result && result.data && result.data.authorizedUser
         ? result.data.authorizedUser
         : null;
@@ -58,13 +60,18 @@ const AppBar = () => {
         await authStorage.removeAccessToken();
         await client.resetStore();
     }
+
+    const createReview = () => {
+        history.push('/createReview')
+    }
+
     return (
         <View style={styles.container}>
             <ScrollView style={styles.scrollView} horizontal>
                 <Link to="/" component={AppBarTab}>Repositories</Link>
                 {!user && <Link to="/sign-in" component={AppBarTab}>Sign in</Link>}
+                {user && <AppBarTab onPress={() => createReview()}>Create a review</AppBarTab>}
                 {user && <AppBarTab onPress={() => signOut()}>Sign out</AppBarTab>}
-
             </ScrollView>
         </View>
     );
